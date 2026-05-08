@@ -26,11 +26,11 @@ def check_dataset(dataset, dataset_name):
     print(f"  {dataset_name}")
     print(f"{'=' * 50}")
 
-    # 各クラスのカウント
+    # 各クラスのカウント（.targets属性を使って高速にカウント）
     class_counts = {label: 0 for label in TARGET_CLASSES.keys()}
     total_vehicle = 0
 
-    for _, label in dataset:
+    for label in dataset.targets:
         if label in TARGET_CLASSES:
             class_counts[label] += 1
             total_vehicle += 1

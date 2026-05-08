@@ -94,10 +94,21 @@ python evaluate.py
 任意の画像ファイルを指定して、乗り物の種類を予測します。
 
 ```bash
-python predict.py --image sample_images/example.jpg
+python predict.py --image sample_images/airplane_example.png
 ```
 
 予測されたクラス名と確信度が表示されます。
+
+## サンプル画像について
+
+`sample_images/` フォルダにCIFAR-10テストデータから抽出した各クラスのサンプル画像が含まれています。
+
+- `airplane_example.png`
+- `automobile_example.png`
+- `ship_example.png`
+- `truck_example.png`
+
+推論の動作確認にお使いください。
 
 ## 注意点
 
@@ -106,3 +117,51 @@ python predict.py --image sample_images/example.jpg
 - 学習済みモデル (`saved_models/`) やデータ (`data/`) は `.gitignore` で除外されています
 - `predict.py` に渡す画像は、乗り物（飛行機・車・船・トラック）の画像を推奨します
 - モデルはシンプルなCNNのため、精度は高くありません。学習の流れを理解するための教材としてお使いください
+
+## 実行確認結果
+
+以下の環境で動作確認を行いました。
+
+- **Python**: 3.12.8
+- **PyTorch**: 2.11.0
+- **デバイス**: CPU
+
+### 1. `pip install -r requirements.txt`
+正常にインストール完了。
+
+### 2. `python check_dataset.py`
+```
+学習データ (Train): 乗り物クラス 20,000枚
+  airplane: 5,000枚 / automobile: 5,000枚 / ship: 5,000枚 / truck: 5,000枚
+
+テストデータ (Test): 乗り物クラス 4,000枚
+  airplane: 1,000枚 / automobile: 1,000枚 / ship: 1,000枚 / truck: 1,000枚
+
+ラベル変換: すべてOK
+```
+
+### 3. `python train.py`
+```
+15エポック学習完了
+最終精度: 98.31% (学習データ)
+モデル保存先: saved_models/vehicle_classifier.pth
+```
+
+### 4. `python evaluate.py`
+```
+全体の精度: 88.40%
+
+クラス別精度:
+  airplane:   91.00%
+  automobile: 86.90%
+  ship:       84.90%
+  truck:      90.80%
+
+混同行列: confusion_matrix.png に保存
+```
+
+### 5. `python predict.py --image sample_images/airplane_example.png`
+```
+予測結果: airplane
+確信度:   100.00%
+```
